@@ -10,10 +10,12 @@ from datetime import datetime, timezone
 
 app = Flask(__name__)
 
-scheduler = BackgroundScheduler()
-scheduler.add_job(func=fetch_weather, trigger="interval", hours=12, id="weather_refresh")
-scheduler.start()
-atexit.register(lambda: scheduler.shutdown())
+
+def _start_scheduler():
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(func=fetch_weather, trigger="interval", hours=12, id="weather_refresh")
+    scheduler.start()
+    atexit.register(lambda: scheduler.shutdown())
 
 
 @app.route("/")
@@ -85,5 +87,6 @@ def refresh():
 
 
 if __name__ == "__main__":
+    _start_scheduler()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)

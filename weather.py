@@ -1,11 +1,13 @@
 import requests
 import json
+import time
 import threading
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 CACHE_FILE = Path("weather_cache.json")
 CACHE_LOCK = threading.Lock()
+_FETCH_LOCK = threading.Lock()
 
 LOCATIONS = [
     {"name": "Wengen", "lat": 46.6067, "lon": 7.9222, "elev": 1275, "day_label": "Base"},
@@ -68,13 +70,38 @@ def _snow_risk(elev, temp_max_c, precip_prob, weather_code):
     return "low"
 
 
-def fetch_weather():
-    all_data = {}
-    today = datetime.now(timezone.utc).date()
+def _fetch_with_retry(url, params, max_retries=4):
+    for attempt in range(max_retries):
+        resp = requests.get(url, params=params, timeout=15)
+        if resp.status_code == 429:
+            wait = 2 ** (attempt + 1)
+            print(f"  Rate limited, retrying in {wait}s...")
+            time.sleep(wait)
+            continue
+        resp.raise_for_status()
+        return resp.json()
+    resp.raise_for_status()
 
-    for loc in LOCATIONS:
+
+def fetch_weather():
+    if not _FETCH_LOCK.acquire(blocking=False):
+        print("Another fetch already in progress, skipping")
+        return load_cache() or {"fetched_at": datetime.now(timezone.utc).isoformat(), "locations": {}}
+
+    try:
+        return _do_fetch()
+    finally:
+        _FETCH_LOCK.release()
+
+
+def _do_fetch():
+    all_data = {}
+
+    for idx, loc in enumerate(LOCATIONS):
+        if idx > 0:
+            time.sleep(1.5)
         try:
-            resp = requests.get(
+            data = _fetch_with_retry(
                 "https://api.open-meteo.com/v1/forecast",
                 params={
                     "latitude": loc["lat"],
@@ -84,10 +111,7 @@ def fetch_weather():
                     "timezone": "Europe/Zurich",
                     "forecast_days": 16,
                 },
-                timeout=15,
             )
-            resp.raise_for_status()
-            data = resp.json()
         except Exception as e:
             print(f"Error fetching weather for {loc['name']}: {e}")
             continue
