@@ -738,8 +738,8 @@
         <strong>Hoht&uuml;rli &mdash; 2,778 m</strong>
       </div>
       <div>
-        <span>Data source</span>
-        <strong>Open-Meteo API</strong>
+        <span>Data source{{ "s" if sources|length > 1 else "" }}</span>
+        <strong>{{ sources|join(" + ") if sources else "Loading…" }}</strong>
       </div>
     </div>
   </div>
@@ -797,7 +797,7 @@
 <section>
   <div class="section-label">Live 5-Day Outlook &middot; From Today</div>
   <h2 class="section-title">Current <em>weather pattern</em>.</h2>
-  <p class="section-lede">Live weather data from Open-Meteo for each location on the route. Updated every 12 hours. Reliable forecasts for June 17&ndash;21 will become available starting around June 12.</p>
+  <p class="section-lede">Live weather data from {{ sources|join(" and ") if sources else "Open-Meteo and Yr.no" }} for each location on the route. Updated every 12 hours. If one source fails, the other provides fallback data automatically.</p>
 
   <div class="outlook-grid">
     <div class="outlook-row header">
@@ -811,7 +811,7 @@
     <div class="outlook-row">
       <div class="outlook-cell location">
         <div class="name">{{ row.name }}</div>
-        <div class="elev">{{ "{:,}".format(row.elev) }} m &middot; {{ row.day_label }}</div>
+        <div class="elev">{{ "{:,}".format(row.elev) }} m &middot; {{ row.day_label }}{% if row.source %} &middot; <span style="color: var(--glacier)">{{ row.source }}</span>{% endif %}</div>
       </div>
       {% for fc in row.days %}
       <div class="outlook-cell">
@@ -928,7 +928,7 @@
         {% endfor %}
         {% if hd.forecast %}
         <p style="margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-soft);">
-          Live forecast: {{ hd.forecast.condition }}, high {{ hd.forecast.temp_max_f }}&deg;F / low {{ hd.forecast.temp_min_f }}&deg;F, {{ hd.forecast.precip_label }}
+          Live forecast ({{ hd.forecast.source }}): {{ hd.forecast.condition }}, high {{ hd.forecast.temp_max_f }}&deg;F / low {{ hd.forecast.temp_min_f }}&deg;F, {{ hd.forecast.precip_label }}
         </p>
         {% endif %}
       </div>

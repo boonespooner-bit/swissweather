@@ -46,6 +46,7 @@ def index():
             "elev": loc["elev"],
             "day_label": loc["day_label"],
             "days": days,
+            "source": loc_data.get("source", ""),
         })
 
     hike_days_data = []
@@ -69,6 +70,7 @@ def index():
         outlook_date_labels.append(dt.strftime("%a %-m/%-d"))
 
     has_data = bool(locations)
+    sources = cache.get("sources", [])
 
     return render_template(
         "index.html",
@@ -80,6 +82,7 @@ def index():
         hike_days_data=hike_days_data,
         hike_dates=hike_dates,
         has_data=has_data,
+        sources=sources,
     )
 
 
