@@ -11,6 +11,11 @@ from datetime import datetime, timezone
 app = Flask(__name__)
 
 
+@app.template_filter('m_to_ft')
+def m_to_ft(meters):
+    return "{:,}".format(round(meters * 3.28084))
+
+
 def _start_scheduler():
     scheduler = BackgroundScheduler()
     scheduler.add_job(func=fetch_weather, trigger="interval", hours=12, id="weather_refresh")

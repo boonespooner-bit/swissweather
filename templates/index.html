@@ -731,11 +731,11 @@
       </div>
       <div>
         <span>Trek elevation range</span>
-        <strong>1,520 m &rarr; 2,840 m</strong>
+        <strong>4,987 ft &rarr; 9,318 ft</strong>
       </div>
       <div>
         <span>Highest pass</span>
-        <strong>Hoht&uuml;rli &mdash; 2,778 m</strong>
+        <strong>Hoht&uuml;rli &mdash; 9,114 ft</strong>
       </div>
       <div>
         <span>Data source{{ "s" if sources|length > 1 else "" }}</span>
@@ -761,7 +761,7 @@
   <svg class="alert-icon"><use href="#icon-warning"/></svg>
   <div>
     <h3>Snow expected at altitude &mdash; monitor closely</h3>
-    <p>The Bernese Oberland high passes remain snow-covered in mid-June. The Sefinenfurgga (2,612 m) and Hoht&uuml;rli (2,778 m) crossings will likely require <strong>microspikes</strong>. This page refreshes weather data every 12 hours from Open-Meteo. Check daily from June 12 when reliable forecasts open up for your hike dates.</p>
+    <p>The Bernese Oberland high passes remain snow-covered in mid-June. The Sefinenfurgga (8,570 ft) and Hoht&uuml;rli (9,114 ft) crossings will likely require <strong>microspikes</strong>. This page refreshes weather data every 12 hours. Check daily from June 12 when reliable forecasts open up for your hike dates.</p>
   </div>
 </div>
 
@@ -774,19 +774,19 @@
   <div class="snow-status">
     <div class="snow-card cold">
       <div class="metric-label">High alpine snowpack</div>
-      <div class="metric-value">~225<span class="unit">cm</span></div>
-      <div class="metric-sub">at Schilthorn summit (2,970 m)</div>
+      <div class="metric-value">~89<span class="unit">in</span></div>
+      <div class="metric-sub">at Schilthorn summit (9,744 ft)</div>
       <p>Persistent snow remains across the high zone. Hut wardens report normal late-spring conditions at altitude.</p>
     </div>
     <div class="snow-card warn">
       <div class="metric-label">Mid-altitude snowpack</div>
-      <div class="metric-value">~135<span class="unit">cm</span></div>
-      <div class="metric-sub">at 2,500 m level</div>
-      <p>Snow lingers across exposed passes and north-facing slopes. The Sefinenfurgga (2,612 m) and Hoht&uuml;rli (2,778 m) are at or above this elevation. <strong>Microspikes required</strong> for both crossings.</p>
+      <div class="metric-value">~53<span class="unit">in</span></div>
+      <div class="metric-sub">at 8,200 ft level</div>
+      <p>Snow lingers across exposed passes and north-facing slopes. The Sefinenfurgga (8,570 ft) and Hoht&uuml;rli (9,114 ft) are at or above this elevation. <strong>Microspikes required</strong> for both crossings.</p>
     </div>
     <div class="snow-card danger">
       <div class="metric-label">Highest hut elevation</div>
-      <div class="metric-value">2,840<span class="unit">m</span></div>
+      <div class="metric-value">9,318<span class="unit">ft</span></div>
       <div class="metric-sub">Bl&uuml;emlisalph&uuml;tte &middot; Day 4</div>
       <p><strong>Snow is essentially guaranteed</strong> at this elevation in mid-June. Expect overnight temperatures near or below freezing. Pack every warm layer you brought.</p>
     </div>
@@ -811,7 +811,7 @@
     <div class="outlook-row">
       <div class="outlook-cell location">
         <div class="name">{{ row.name }}</div>
-        <div class="elev">{{ "{:,}".format(row.elev) }} m &middot; {{ row.day_label }}{% if row.source %} &middot; <span style="color: var(--glacier)">{{ row.source }}</span>{% endif %}</div>
+        <div class="elev">{{ row.elev|m_to_ft }} ft &middot; {{ row.day_label }}{% if row.source %} &middot; <span style="color: var(--glacier)">{{ row.source }}</span>{% endif %}</div>
       </div>
       {% for fc in row.days %}
       <div class="outlook-cell">
@@ -839,15 +839,15 @@
   {% set day_dates_display = ["17", "18", "19", "20", "21"] %}
   {% set hike_titles = ["Hike to Lobhornhütte", "Hike to Rotstockhütte", "Hike to Gspaltenhornhütte", "Hike to Blüemlisalphütte", "Hike out to Kandersteg via Oeschinensee"] %}
   {% set hike_routes = [
-    "5.9 mi · Sulwald → Lobhornhütte (1,955 m)",
-    "9.6 mi · Lobhornhütte → Rotstockhütte (2,039 m)",
-    "4 mi · via Sefinenfurgga Pass (2,612 m) → Gspaltenhornhütte (2,455 m)",
-    "4.8 mi · along Gamchi Glacier → Blüemlisalphütte (2,840 m)",
-    "7.5 mi · Hohtürli descent → Oeschinensee → Kandersteg (1,176 m)"
+    "5.9 mi · Sulwald → Lobhornhütte (6,414 ft)",
+    "9.6 mi · Lobhornhütte → Rotstockhütte (6,690 ft)",
+    "4 mi · via Sefinenfurgga Pass (8,570 ft) → Gspaltenhornhütte (8,054 ft)",
+    "4.8 mi · along Gamchi Glacier → Blüemlisalphütte (9,318 ft)",
+    "7.5 mi · Hohtürli descent → Oeschinensee → Kandersteg (3,858 ft)"
   ] %}
   {% set hike_distances = ["5.9 mi", "9.6 mi", "4 mi", "4.8 mi", "7.5 mi"] %}
-  {% set hike_gains = ["+435 m", "+810 m", "+573 m", "+385 m", "−1,664 m"] %}
-  {% set hike_top_elevs = ["1,955 m", "2,039 m", "2,612 m", "2,840 m", "2,840 m"] %}
+  {% set hike_gains = ["+1,427 ft", "+2,657 ft", "+1,880 ft", "+1,263 ft", "−5,459 ft"] %}
+  {% set hike_top_elevs = ["6,414 ft", "6,690 ft", "8,570 ft", "9,318 ft", "9,318 ft"] %}
   {% set hike_difficulties = ["Moderate", "Hard · Long", "Hard · Technical", "Hard · Cold", "Hard · Steep"] %}
   {% set gain_labels = ["Gain", "Gain", "Gain", "Gain", "Loss"] %}
   {% set top_labels = ["Top elev.", "Top elev.", "Pass elev.", "Top elev.", "Start elev."] %}
@@ -855,25 +855,25 @@
 
   {% set snow_notes = [
     {"class": "", "level": "Snow Outlook", "lines": [
-      "At 1,955 m, the Lobhornhütte sits just below the typical mid-June snowline. <strong>The route should be snow-free</strong> for hiking purposes. However, residual snow patches may linger on the highest exposed sections in shaded north faces.",
+      "At 6,414 ft, the Lobhornhütte sits just below the typical mid-June snowline. <strong>The route should be snow-free</strong> for hiking purposes. However, residual snow patches may linger on the highest exposed sections in shaded north faces.",
       "Should melt quickly with any sun."
     ]},
     {"class": "", "level": "Snow Outlook", "lines": [
-      "Trail mostly stays around 2,000 m. <strong>Likely snow-free</strong> on the main path. Some north-facing approaches near the Rotstockhütte may hold residual patches.",
-      "Start early — June afternoons in the Alps regularly produce thunderstorms. This is your longest day; be off exposed ridgelines by 14:00 if storms threaten."
+      "Trail mostly stays around 6,500 ft. <strong>Likely snow-free</strong> on the main path. Some north-facing approaches near the Rotstockhütte may hold residual patches.",
+      "Start early — June afternoons in the Alps regularly produce thunderstorms. This is your longest day; be off exposed ridgelines by 2:00 PM if storms threaten."
     ]},
     {"class": "danger", "level": "Snow Outlook — HIGH RISK", "lines": [
-      "The Sefinenfurgga at 2,612 m is <strong>very likely to hold snow in mid-June</strong>. Current snow depth at this elevation is ~135 cm region-wide.",
+      "The Sefinenfurgga at 8,570 ft is <strong>very likely to hold snow in mid-June</strong>. Current snow depth at this elevation is ~53 inches region-wide.",
       "<strong>Microspikes are essential.</strong> In heavy snow years, crampons and ice axes may be needed. Wire ropes and ladders may be partially buried.",
       "<strong>Action required:</strong> Call Rotstockhütte warden Simon Furrer (+41 33 855 24 64) the night before for current pass conditions."
     ]},
     {"class": "danger", "level": "Snow Outlook — HIGH RISK", "lines": [
-      "Your <strong>highest sleep at 2,840 m</strong> — snow is essentially guaranteed at this elevation in mid-June. The trail passes near the Gamchi Glacier.",
+      "Your <strong>highest sleep at 9,318 ft</strong> — snow is essentially guaranteed at this elevation in mid-June. The trail passes near the Gamchi Glacier.",
       "Expect overnight temperatures near or below freezing. <strong>Pack every warm layer you brought.</strong>",
       "<strong>Action required:</strong> Call Blüemlisalphütte (+41 33 676 14 37) to confirm the seasonal bridges are installed and the route is passable."
     ]},
     {"class": "warn", "level": "Snow Outlook — MODERATE RISK", "lines": [
-      "The first 30–45 minutes from the Hohtürli pass at 2,778 m descend steeply on scree and wooden stairs. <strong>Snow patches likely on the upper descent</strong> — keep microspikes on for this section.",
+      "The first 30–45 minutes from the Hohtürli pass at 9,114 ft descend steeply on scree and wooden stairs. <strong>Snow patches likely on the upper descent</strong> — keep microspikes on for this section.",
       "Below Ober Bärgli the trail rapidly drops below the snowline. Oeschinensee and Kandersteg are well below freezing levels and will be warm by comparison. Use trekking poles aggressively — this is the knee-killer day."
     ]}
   ] %}
@@ -954,7 +954,7 @@
       </div>
       <div class="check-item">
         <div class="check-when">June 12</div>
-        <div class="check-text"><strong>Pull SLF snow depth map.</strong> Visit slf.ch &mdash; look at snow depth at 2,500 m and 2,800 m in the Bernese Oberland region.</div>
+        <div class="check-text"><strong>Pull SLF snow depth map.</strong> Visit slf.ch &mdash; look at snow depth at 8,200 ft and 9,200 ft in the Bernese Oberland region.</div>
       </div>
       <div class="check-item">
         <div class="check-when">June 13</div>
