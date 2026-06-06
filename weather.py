@@ -181,10 +181,17 @@ def get_weather():
     if cache:
         fetched = datetime.fromisoformat(cache["fetched_at"])
         age = datetime.now(timezone.utc) - fetched
-        if age < timedelta(hours=12):
-            return cache
+        if age >= timedelta(hours=12):
+            trigger_background_fetch()
+        return cache
 
-    return fetch_weather()
+    trigger_background_fetch()
+    return {"fetched_at": datetime.now(timezone.utc).isoformat(), "locations": {}}
+
+
+def trigger_background_fetch():
+    t = threading.Thread(target=fetch_weather, daemon=True)
+    t.start()
 
 
 def get_outlook_dates(cache):

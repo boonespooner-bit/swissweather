@@ -68,6 +68,8 @@ def index():
         dt = datetime.strptime(d, "%Y-%m-%d")
         outlook_date_labels.append(dt.strftime("%a %-m/%-d"))
 
+    has_data = bool(locations)
+
     return render_template(
         "index.html",
         updated_str=updated_str,
@@ -77,6 +79,7 @@ def index():
         outlook_date_labels=outlook_date_labels,
         hike_days_data=hike_days_data,
         hike_dates=hike_dates,
+        has_data=has_data,
     )
 
 

@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% if not has_data %}<meta http-equiv="refresh" content="15">{% endif %}
 <title>Bernese Oberland Traverse — Snow & Weather Bulletin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -747,6 +748,15 @@
 <div class="container">
 
 <!-- ALERT BANNER -->
+{% if not has_data %}
+<div class="alert-banner" style="border-left-color: var(--glacier); background: var(--snow);">
+  <svg class="alert-icon"><use href="#icon-warning"/></svg>
+  <div>
+    <h3 style="color: var(--glacier-deep);">Loading weather data&hellip;</h3>
+    <p>Fetching live forecasts from Open-Meteo for all 6 route locations. This page will auto-refresh in 15 seconds. The first load takes a moment as we space out API requests to avoid rate limits.</p>
+  </div>
+</div>
+{% endif %}
 <div class="alert-banner">
   <svg class="alert-icon"><use href="#icon-warning"/></svg>
   <div>
