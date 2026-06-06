@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bernese Oberland Traverse — Snow & Weather Bulletin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F4EFE6;
+    --paper-warm: #ECE5D6;
+    --ink: #14181F;
+    --ink-soft: #4A5460;
+    --rule: #C8BFAF;
+    --glacier: #4A7B92;
+    --glacier-deep: #1F4156;
+    --snow: #E8EEF2;
+    --alpine-shadow: #243747;
+    --warn: #B85A1A;
+    --warn-soft: #D87A2E;
+    --warn-bg: #F4E2CC;
+    --danger: #8B2417;
+    --danger-bg: #F0D6CE;
+    --safe: #4A6E3A;
+    --safe-bg: #DDE5D2;
+    --gold: #B8923E;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Newsreader', Georgia, serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(at 10% 5%, rgba(74,123,146,0.04) 0%, transparent 50%),
+      radial-gradient(at 90% 95%, rgba(184,90,26,0.04) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+  header.masthead {
+    border-bottom: 2px solid var(--ink);
+    padding: 28px 0 20px;
+    background: var(--paper);
+  }
+  .masthead-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 14px;
+    margin-bottom: 28px;
+  }
+  .masthead-top .left, .masthead-top .right { display: flex; gap: 20px; }
+  .masthead-top .dot { color: var(--warn); }
+  h1.title {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 8px;
+    font-variation-settings: 'opsz' 144;
+  }
+  h1.title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--glacier-deep);
+  }
+  .subtitle {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--ink-soft);
+    font-weight: 300;
+    max-width: 720px;
+    margin-bottom: 24px;
+  }
+  .masthead-bottom {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .masthead-bottom div span {
+    display: block;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+    font-size: 10px;
+  }
+  .masthead-bottom div strong {
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .live-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--safe);
+    margin-right: 6px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .alert-banner {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn);
+    border-left: 6px solid var(--warn);
+    padding: 24px 28px;
+    margin: 40px 0;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .alert-banner .alert-icon {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+  }
+  .alert-banner h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--warn);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .alert-banner p {
+    font-size: 16px;
+    color: var(--ink);
+    max-width: 800px;
+  }
+
+  section { margin: 64px 0; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--warn);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: var(--warn);
+  }
+  h2.section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    color: var(--ink);
+    font-variation-settings: 'opsz' 144;
+  }
+  h2.section-title em {
+    font-style: italic;
+    color: var(--glacier-deep);
+  }
+  .section-lede {
+    font-family: 'Newsreader', serif;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 780px;
+    margin-bottom: 40px;
+  }
+
+  .snow-status {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .snow-card {
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    padding: 28px;
+    position: relative;
+  }
+  .snow-card.cold { border-top: 4px solid var(--glacier-deep); }
+  .snow-card.warn { border-top: 4px solid var(--warn); }
+  .snow-card.danger { border-top: 4px solid var(--danger); }
+  .snow-card .metric-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+  .snow-card .metric-value {
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 4px;
+    font-variation-settings: 'opsz' 144;
+  }
+  .snow-card .metric-value .unit {
+    font-size: 22px;
+    color: var(--ink-soft);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+  .snow-card .metric-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .snow-card p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .outlook-grid {
+    border: 1px solid var(--ink);
+    background: var(--paper-warm);
+  }
+  .outlook-row {
+    display: grid;
+    grid-template-columns: 220px repeat(5, 1fr);
+    border-bottom: 1px solid var(--rule);
+  }
+  .outlook-row:last-child { border-bottom: none; }
+  .outlook-row.header {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .outlook-cell {
+    padding: 18px 16px;
+    border-right: 1px solid var(--rule);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .outlook-row.header .outlook-cell { border-right: 1px solid rgba(255,255,255,0.2); }
+  .outlook-cell:last-child { border-right: none; }
+  .outlook-cell.location {
+    text-align: left;
+    align-items: flex-start;
+    background: var(--paper);
+    padding: 18px 20px;
+    border-right: 2px solid var(--ink);
+  }
+  .outlook-cell.location .name {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .outlook-cell.location .elev {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+  }
+  .weather-icon { width: 40px; height: 40px; }
+  .temp-display {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .precip-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--glacier-deep);
+    font-weight: 500;
+  }
+  .precip-display.snow { color: var(--danger); font-weight: 700; }
+
+  .day-card {
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    margin-bottom: 32px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+  }
+  .day-card .day-sidebar {
+    background: var(--alpine-shadow);
+    color: var(--snow);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .day-card .day-sidebar::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(at 0% 0%, rgba(74,123,146,0.4) 0%, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(20,24,31,0.6) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .day-card .day-sidebar > * { position: relative; z-index: 1; }
+  .day-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+  }
+  .day-date {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--snow);
+    font-variation-settings: 'opsz' 144;
+  }
+  .day-date em {
+    font-style: italic;
+    color: rgba(255,255,255,0.7);
+    font-weight: 400;
+  }
+  .day-icon-block {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .day-icon-block .icon-wrap {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+  }
+  .day-icon-block .icon-wrap svg {
+    width: 100%;
+    height: 100%;
+  }
+  .day-icon-block .condition-text {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--snow);
+  }
+  .day-temps {
+    display: flex;
+    gap: 24px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+  }
+  .day-temps .temp-block .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 4px;
+  }
+  .day-temps .temp-block .value {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--snow);
+  }
+  .snow-risk-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    margin-top: 8px;
+    width: fit-content;
+  }
+  .snow-risk-badge.low { background: var(--safe-bg); color: var(--safe); }
+  .snow-risk-badge.moderate { background: var(--warn-bg); color: var(--warn); }
+  .snow-risk-badge.high { background: var(--danger-bg); color: var(--danger); }
+
+  .day-content {
+    padding: 36px 40px;
+  }
+  .day-content h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+    color: var(--ink);
+    font-variation-settings: 'opsz' 144;
+  }
+  .day-content .destination {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+  .day-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 20px 24px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+  }
+  .day-stats .stat {
+    border-right: 1px solid var(--rule);
+    padding-right: 16px;
+  }
+  .day-stats .stat:last-child { border-right: none; }
+  .day-stats .stat .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .day-stats .stat .value {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .snow-detail {
+    background: var(--paper);
+    border-left: 4px solid var(--glacier);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .snow-detail.danger { border-left-color: var(--danger); background: var(--danger-bg); }
+  .snow-detail.warn { border-left-color: var(--warn); background: var(--warn-bg); }
+  .snow-detail h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .snow-detail h4 svg { width: 18px; height: 18px; }
+  .snow-detail p { font-size: 15px; line-height: 1.55; color: var(--ink); }
+  .snow-detail p + p { margin-top: 8px; }
+  .snow-detail strong { color: var(--danger); font-weight: 700; }
+  .snow-detail.warn strong { color: var(--warn); }
+
+  .sources-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .source-card {
+    border: 1px solid var(--rule);
+    background: var(--paper-warm);
+    padding: 24px;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    transition: all 0.2s ease;
+  }
+  .source-card:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+    transform: translateY(-2px);
+  }
+  .source-card:hover .source-num { color: var(--gold); }
+  .source-card:hover .source-desc { color: rgba(255,255,255,0.7); }
+  .source-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--warn);
+    flex-shrink: 0;
+    padding-top: 4px;
+  }
+  .source-card h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    line-height: 1.1;
+  }
+  .source-url {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--glacier-deep);
+    margin-bottom: 8px;
+    word-break: break-all;
+  }
+  .source-card:hover .source-url { color: var(--gold); }
+  .source-desc {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+
+  .checklist {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 48px 56px;
+    margin: 64px -32px;
+  }
+  .checklist .container { padding: 0; }
+  .checklist .section-label { color: var(--gold); }
+  .checklist .section-label::before { background: var(--gold); }
+  .checklist h2 { color: var(--paper); }
+  .checklist h2 em { color: var(--gold); }
+  .checklist-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .check-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    align-items: flex-start;
+  }
+  .check-item .check-when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    font-weight: 700;
+    width: 80px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .check-item .check-text {
+    font-size: 15px;
+    color: var(--snow);
+    line-height: 1.5;
+  }
+  .check-item .check-text strong {
+    color: var(--paper);
+    font-weight: 700;
+  }
+
+  footer {
+    border-top: 2px solid var(--ink);
+    padding: 40px 0;
+    margin-top: 64px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  @media (max-width: 900px) {
+    .masthead-bottom { grid-template-columns: repeat(2, 1fr); }
+    .snow-status { grid-template-columns: 1fr; }
+    .outlook-row { grid-template-columns: 140px repeat(5, 1fr); font-size: 12px; }
+    .day-card { grid-template-columns: 1fr; }
+    .day-stats { grid-template-columns: repeat(2, 1fr); }
+    .sources-grid { grid-template-columns: 1fr; }
+    .checklist-items { grid-template-columns: 1fr; }
+    .checklist { margin: 64px -32px; padding: 40px 32px; }
+  }
+
+  @media print {
+    body { font-size: 12px; }
+    .checklist { background: var(--paper); color: var(--ink); }
+    .day-sidebar { background: var(--ink); }
+    .day-card { page-break-inside: avoid; }
+    section { margin: 32px 0; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="icon-sun" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="13" fill="#F5C842" stroke="#B8923E" stroke-width="1.5"/>
+      <g stroke="#B8923E" stroke-width="2.5" stroke-linecap="round">
+        <line x1="32" y1="6" x2="32" y2="13"/><line x1="32" y1="51" x2="32" y2="58"/>
+        <line x1="6" y1="32" x2="13" y2="32"/><line x1="51" y1="32" x2="58" y2="32"/>
+        <line x1="13.5" y1="13.5" x2="18" y2="18"/><line x1="46" y1="46" x2="50.5" y2="50.5"/>
+        <line x1="13.5" y1="50.5" x2="18" y2="46"/><line x1="46" y1="18" x2="50.5" y2="13.5"/>
+      </g>
+    </symbol>
+    <symbol id="icon-partly" viewBox="0 0 64 64">
+      <circle cx="22" cy="22" r="10" fill="#F5C842" stroke="#B8923E" stroke-width="1.5"/>
+      <g stroke="#B8923E" stroke-width="2" stroke-linecap="round">
+        <line x1="22" y1="3" x2="22" y2="8"/><line x1="3" y1="22" x2="8" y2="22"/>
+        <line x1="8.5" y1="8.5" x2="12" y2="12"/>
+      </g>
+      <path d="M 14 44 Q 14 36 22 36 Q 26 30 32 30 Q 40 30 42 38 Q 50 38 50 46 Q 50 54 42 54 L 22 54 Q 14 54 14 46 Z"
+            fill="#FFFFFF" stroke="#5A6772" stroke-width="1.5" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-cloudy" viewBox="0 0 64 64">
+      <path d="M 12 42 Q 12 32 22 32 Q 26 24 34 24 Q 44 24 46 33 Q 54 33 54 42 Q 54 50 46 50 L 20 50 Q 12 50 12 42 Z"
+            fill="#FFFFFF" stroke="#5A6772" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M 8 50 Q 8 44 14 44 Q 18 38 26 38 L 38 38 Q 46 38 46 46 Q 46 54 38 54 L 14 54 Q 8 54 8 50 Z"
+            fill="#D8D6D0" stroke="#5A6772" stroke-width="1.5" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-rain" viewBox="0 0 64 64">
+      <path d="M 12 32 Q 12 22 22 22 Q 26 14 34 14 Q 44 14 46 23 Q 54 23 54 32 Q 54 40 46 40 L 20 40 Q 12 40 12 32 Z"
+            fill="#A8B5C0" stroke="#3A4A5C" stroke-width="1.5" stroke-linejoin="round"/>
+      <g stroke="#4A7B92" stroke-width="2.5" stroke-linecap="round">
+        <line x1="20" y1="46" x2="17" y2="55"/><line x1="30" y1="46" x2="27" y2="55"/>
+        <line x1="40" y1="46" x2="37" y2="55"/><line x1="50" y1="46" x2="47" y2="55"/>
+      </g>
+    </symbol>
+    <symbol id="icon-heavy-rain" viewBox="0 0 64 64">
+      <path d="M 10 30 Q 10 20 20 20 Q 24 12 32 12 Q 42 12 44 21 Q 54 21 54 30 Q 54 39 44 39 L 18 39 Q 10 39 10 30 Z"
+            fill="#7A8995" stroke="#1F2D3D" stroke-width="1.5" stroke-linejoin="round"/>
+      <g stroke="#1F4156" stroke-width="3" stroke-linecap="round">
+        <line x1="16" y1="45" x2="12" y2="58"/><line x1="24" y1="45" x2="20" y2="58"/>
+        <line x1="32" y1="45" x2="28" y2="58"/><line x1="40" y1="45" x2="36" y2="58"/>
+        <line x1="48" y1="45" x2="44" y2="58"/>
+      </g>
+    </symbol>
+    <symbol id="icon-snow" viewBox="0 0 64 64">
+      <path d="M 12 30 Q 12 20 22 20 Q 26 12 34 12 Q 44 12 46 21 Q 54 21 54 30 Q 54 38 46 38 L 20 38 Q 12 38 12 30 Z"
+            fill="#E8EEF2" stroke="#4A7B92" stroke-width="1.5" stroke-linejoin="round"/>
+      <g fill="#4A7B92" stroke="#1F4156" stroke-width="0.5">
+        <text x="16" y="54" font-size="14" font-weight="bold" font-family="serif">&#10052;</text>
+        <text x="28" y="58" font-size="12" font-weight="bold" font-family="serif">&#10052;</text>
+        <text x="40" y="54" font-size="14" font-weight="bold" font-family="serif">&#10052;</text>
+      </g>
+    </symbol>
+    <symbol id="icon-snowstorm" viewBox="0 0 64 64">
+      <path d="M 8 28 Q 8 17 19 17 Q 23 8 32 8 Q 43 8 45 18 Q 56 18 56 28 Q 56 37 45 37 L 17 37 Q 8 37 8 28 Z"
+            fill="#9AA7B5" stroke="#1F2D3D" stroke-width="1.5" stroke-linejoin="round"/>
+      <g fill="#1F4156" font-family="serif" font-weight="bold">
+        <text x="10" y="48" font-size="12">&#10052;</text><text x="20" y="56" font-size="14">&#10052;</text>
+        <text x="30" y="49" font-size="11">&#10052;</text><text x="40" y="58" font-size="14">&#10052;</text>
+        <text x="50" y="50" font-size="12">&#10052;</text>
+      </g>
+      <g stroke="#1F4156" stroke-width="2" stroke-linecap="round" opacity="0.4">
+        <line x1="4" y1="22" x2="10" y2="24"/><line x1="54" y1="14" x2="60" y2="16"/>
+        <line x1="2" y1="36" x2="8" y2="34"/>
+      </g>
+    </symbol>
+    <symbol id="icon-thunder" viewBox="0 0 64 64">
+      <path d="M 12 28 Q 12 18 22 18 Q 26 10 34 10 Q 44 10 46 19 Q 54 19 54 28 Q 54 36 46 36 L 20 36 Q 12 36 12 28 Z"
+            fill="#7A8995" stroke="#1F2D3D" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M 28 38 L 34 38 L 30 48 L 38 48 L 26 60 L 30 50 L 22 50 Z"
+            fill="#F5C842" stroke="#B8923E" stroke-width="1.5" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-warning" viewBox="0 0 64 64">
+      <path d="M 32 6 L 60 56 L 4 56 Z" fill="#D87A2E" stroke="#8B2417" stroke-width="2" stroke-linejoin="round"/>
+      <text x="32" y="48" text-anchor="middle" font-family="Fraunces, serif" font-size="32" font-weight="700" fill="#FFFFFF">!</text>
+    </symbol>
+    <symbol id="icon-flake" viewBox="0 0 24 24">
+      <g stroke="#1F4156" stroke-width="1.5" stroke-linecap="round" fill="none">
+        <line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/>
+        <line x1="5" y1="5" x2="19" y2="19"/><line x1="5" y1="19" x2="19" y2="5"/>
+        <path d="M 10 4 L 12 6 L 14 4 M 10 20 L 12 18 L 14 20"/>
+        <path d="M 4 10 L 6 12 L 4 14 M 20 10 L 18 12 L 20 14"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="container">
+    <div class="masthead-top">
+      <div class="left">
+        <span><span class="dot">&#9679;</span> <span class="live-dot"></span>Live Weather Data</span>
+        <span>Updated {{ updated_str }}</span>
+      </div>
+      <div class="right">
+        <span>{{ today_str }}</span>
+      </div>
+    </div>
+
+    <h1 class="title">Snow &amp; <em>Weather</em><br>Bulletin</h1>
+    <p class="subtitle">A live field report on alpine conditions for the Bernese Oberland Hut-to-Hut Traverse &mdash; Wengen to Kandersteg, June 17 to 21, 2026. Auto-updates every 12 hours.</p>
+
+    <div class="masthead-bottom">
+      <div>
+        <span>Days until departure</span>
+        <strong>{{ days_left }} days</strong>
+      </div>
+      <div>
+        <span>Trek elevation range</span>
+        <strong>1,520 m &rarr; 2,840 m</strong>
+      </div>
+      <div>
+        <span>Highest pass</span>
+        <strong>Hoht&uuml;rli &mdash; 2,778 m</strong>
+      </div>
+      <div>
+        <span>Data source</span>
+        <strong>Open-Meteo API</strong>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- ALERT BANNER -->
+<div class="alert-banner">
+  <svg class="alert-icon"><use href="#icon-warning"/></svg>
+  <div>
+    <h3>Snow expected at altitude &mdash; monitor closely</h3>
+    <p>The Bernese Oberland high passes remain snow-covered in mid-June. The Sefinenfurgga (2,612 m) and Hoht&uuml;rli (2,778 m) crossings will likely require <strong>microspikes</strong>. This page refreshes weather data every 12 hours from Open-Meteo. Check daily from June 12 when reliable forecasts open up for your hike dates.</p>
+  </div>
+</div>
+
+<!-- SNOW STATUS -->
+<section>
+  <div class="section-label">Current Snow Situation</div>
+  <h2 class="section-title">Where snow has fallen, <em>where it still lies</em>.</h2>
+  <p class="section-lede">Based on Bernese Oberland regional reports and altitude weather data. The pattern this spring is a slightly below-average snow year (~60% of long-term averages) but ongoing cold weather is delaying the typical late-spring melt-off.</p>
+
+  <div class="snow-status">
+    <div class="snow-card cold">
+      <div class="metric-label">High alpine snowpack</div>
+      <div class="metric-value">~225<span class="unit">cm</span></div>
+      <div class="metric-sub">at Schilthorn summit (2,970 m)</div>
+      <p>Persistent snow remains across the high zone. Hut wardens report normal late-spring conditions at altitude.</p>
+    </div>
+    <div class="snow-card warn">
+      <div class="metric-label">Mid-altitude snowpack</div>
+      <div class="metric-value">~135<span class="unit">cm</span></div>
+      <div class="metric-sub">at 2,500 m level</div>
+      <p>Snow lingers across exposed passes and north-facing slopes. The Sefinenfurgga (2,612 m) and Hoht&uuml;rli (2,778 m) are at or above this elevation. <strong>Microspikes required</strong> for both crossings.</p>
+    </div>
+    <div class="snow-card danger">
+      <div class="metric-label">Highest hut elevation</div>
+      <div class="metric-value">2,840<span class="unit">m</span></div>
+      <div class="metric-sub">Bl&uuml;emlisalph&uuml;tte &middot; Day 4</div>
+      <p><strong>Snow is essentially guaranteed</strong> at this elevation in mid-June. Expect overnight temperatures near or below freezing. Pack every warm layer you brought.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5-DAY OUTLOOK (LIVE) -->
+<section>
+  <div class="section-label">Live 5-Day Outlook &middot; From Today</div>
+  <h2 class="section-title">Current <em>weather pattern</em>.</h2>
+  <p class="section-lede">Live weather data from Open-Meteo for each location on the route. Updated every 12 hours. Reliable forecasts for June 17&ndash;21 will become available starting around June 12.</p>
+
+  <div class="outlook-grid">
+    <div class="outlook-row header">
+      <div class="outlook-cell location">Location</div>
+      {% for label in outlook_date_labels %}
+      <div class="outlook-cell">{{ label }}</div>
+      {% endfor %}
+    </div>
+
+    {% for row in outlook_rows %}
+    <div class="outlook-row">
+      <div class="outlook-cell location">
+        <div class="name">{{ row.name }}</div>
+        <div class="elev">{{ "{:,}".format(row.elev) }} m &middot; {{ row.day_label }}</div>
+      </div>
+      {% for fc in row.days %}
+      <div class="outlook-cell">
+        {% if fc %}
+        <svg class="weather-icon"><use href="#{{ fc.icon }}"/></svg>
+        <div class="temp-display">{{ fc.temp_max_f }}&deg;</div>
+        <div class="precip-display{% if fc.is_snow %} snow{% endif %}">{{ fc.precip_label }}</div>
+        {% else %}
+        <div class="temp-display">&mdash;</div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- DAY-BY-DAY HIKE OUTLOOK -->
+<section>
+  <div class="section-label">Hike Days &middot; June 17 &rarr; 21</div>
+  <h2 class="section-title">Day-by-day <em>conditions outlook</em>.</h2>
+  <p class="section-lede">{% if days_left > 11 %}Reliable forecasts for these specific dates will become available starting around June 12. The conditions shown below reflect the <strong>current long-range projection</strong> from Open-Meteo.{% else %}Live forecast data from Open-Meteo for each hike day. Refresh from MeteoSwiss closer to departure for the most accurate local forecasts.{% endif %}</p>
+
+  {% set day_names = ["Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
+  {% set day_dates_display = ["17", "18", "19", "20", "21"] %}
+  {% set hike_titles = ["Hike to Lobhornhütte", "Hike to Rotstockhütte", "Hike to Gspaltenhornhütte", "Hike to Blüemlisalphütte", "Hike out to Kandersteg via Oeschinensee"] %}
+  {% set hike_routes = [
+    "5.9 mi · Sulwald → Lobhornhütte (1,955 m)",
+    "9.6 mi · Lobhornhütte → Rotstockhütte (2,039 m)",
+    "4 mi · via Sefinenfurgga Pass (2,612 m) → Gspaltenhornhütte (2,455 m)",
+    "4.8 mi · along Gamchi Glacier → Blüemlisalphütte (2,840 m)",
+    "7.5 mi · Hohtürli descent → Oeschinensee → Kandersteg (1,176 m)"
+  ] %}
+  {% set hike_distances = ["5.9 mi", "9.6 mi", "4 mi", "4.8 mi", "7.5 mi"] %}
+  {% set hike_gains = ["+435 m", "+810 m", "+573 m", "+385 m", "−1,664 m"] %}
+  {% set hike_top_elevs = ["1,955 m", "2,039 m", "2,612 m", "2,840 m", "2,840 m"] %}
+  {% set hike_difficulties = ["Moderate", "Hard · Long", "Hard · Technical", "Hard · Cold", "Hard · Steep"] %}
+  {% set gain_labels = ["Gain", "Gain", "Gain", "Gain", "Loss"] %}
+  {% set top_labels = ["Top elev.", "Top elev.", "Pass elev.", "Top elev.", "Start elev."] %}
+  {% set is_crux = [false, false, true, false, false] %}
+
+  {% set snow_notes = [
+    {"class": "", "level": "Snow Outlook", "lines": [
+      "At 1,955 m, the Lobhornhütte sits just below the typical mid-June snowline. <strong>The route should be snow-free</strong> for hiking purposes. However, residual snow patches may linger on the highest exposed sections in shaded north faces.",
+      "Should melt quickly with any sun."
+    ]},
+    {"class": "", "level": "Snow Outlook", "lines": [
+      "Trail mostly stays around 2,000 m. <strong>Likely snow-free</strong> on the main path. Some north-facing approaches near the Rotstockhütte may hold residual patches.",
+      "Start early — June afternoons in the Alps regularly produce thunderstorms. This is your longest day; be off exposed ridgelines by 14:00 if storms threaten."
+    ]},
+    {"class": "danger", "level": "Snow Outlook — HIGH RISK", "lines": [
+      "The Sefinenfurgga at 2,612 m is <strong>very likely to hold snow in mid-June</strong>. Current snow depth at this elevation is ~135 cm region-wide.",
+      "<strong>Microspikes are essential.</strong> In heavy snow years, crampons and ice axes may be needed. Wire ropes and ladders may be partially buried.",
+      "<strong>Action required:</strong> Call Rotstockhütte warden Simon Furrer (+41 33 855 24 64) the night before for current pass conditions."
+    ]},
+    {"class": "danger", "level": "Snow Outlook — HIGH RISK", "lines": [
+      "Your <strong>highest sleep at 2,840 m</strong> — snow is essentially guaranteed at this elevation in mid-June. The trail passes near the Gamchi Glacier.",
+      "Expect overnight temperatures near or below freezing. <strong>Pack every warm layer you brought.</strong>",
+      "<strong>Action required:</strong> Call Blüemlisalphütte (+41 33 676 14 37) to confirm the seasonal bridges are installed and the route is passable."
+    ]},
+    {"class": "warn", "level": "Snow Outlook — MODERATE RISK", "lines": [
+      "The first 30–45 minutes from the Hohtürli pass at 2,778 m descend steeply on scree and wooden stairs. <strong>Snow patches likely on the upper descent</strong> — keep microspikes on for this section.",
+      "Below Ober Bärgli the trail rapidly drops below the snowline. Oeschinensee and Kandersteg are well below freezing levels and will be warm by comparison. Use trekking poles aggressively — this is the knee-killer day."
+    ]}
+  ] %}
+
+  {% for hd in hike_days_data %}
+  {% set i = loop.index0 %}
+  <div class="day-card">
+    <div class="day-sidebar">
+      <div class="day-number">Day {{ "%02d"|format(hd.day_num) }} &middot; {{ day_names[i] }}</div>
+      <div class="day-date">June <em>{{ day_dates_display[i] }}</em></div>
+      <div class="day-icon-block">
+        <div class="icon-wrap">
+          {% if hd.forecast %}
+          <svg viewBox="0 0 64 64"><use href="#{{ hd.forecast.icon }}"/></svg>
+          {% else %}
+          <svg viewBox="0 0 64 64"><use href="#icon-cloudy"/></svg>
+          {% endif %}
+        </div>
+        <div class="condition-text">
+          {% if hd.forecast %}{{ hd.forecast.condition }}{% else %}Forecast pending{% endif %}
+        </div>
+      </div>
+      <div class="day-temps">
+        <div class="temp-block">
+          <div class="label">Day</div>
+          <div class="value">{% if hd.forecast %}~{{ hd.forecast.temp_max_f }}&deg;F{% else %}&mdash;{% endif %}</div>
+        </div>
+        <div class="temp-block">
+          <div class="label">Night</div>
+          <div class="value">{% if hd.forecast %}~{{ hd.forecast.temp_min_f }}&deg;F{% else %}&mdash;{% endif %}</div>
+        </div>
+      </div>
+      {% if hd.forecast %}
+      <span class="snow-risk-badge {{ hd.forecast.snow_risk }}">Snow risk: {{ hd.forecast.snow_risk|upper }}</span>
+      {% else %}
+      <span class="snow-risk-badge moderate">Snow risk: TBD</span>
+      {% endif %}
+    </div>
+    <div class="day-content">
+      <h3>{{ hike_titles[i] }}{% if is_crux[i] %} <em style="color:var(--warn)">&#9888; Crux day</em>{% endif %}</h3>
+      <div class="destination">{{ hike_routes[i] }}</div>
+      <div class="day-stats">
+        <div class="stat"><div class="label">Distance</div><div class="value">{{ hike_distances[i] }}</div></div>
+        <div class="stat"><div class="label">{{ gain_labels[i] }}</div><div class="value">{{ hike_gains[i] }}</div></div>
+        <div class="stat"><div class="label">{{ top_labels[i] }}</div><div class="value">{{ hike_top_elevs[i] }}</div></div>
+        <div class="stat"><div class="label">Difficulty</div><div class="value">{{ hike_difficulties[i] }}</div></div>
+      </div>
+      <div class="snow-detail {{ snow_notes[i].class }}">
+        <h4><svg><use href="#icon-flake"/></svg> {{ snow_notes[i].level }}</h4>
+        {% for line in snow_notes[i].lines %}
+        <p>{{ line|safe }}</p>
+        {% endfor %}
+        {% if hd.forecast %}
+        <p style="margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-soft);">
+          Live forecast: {{ hd.forecast.condition }}, high {{ hd.forecast.temp_max_f }}&deg;F / low {{ hd.forecast.temp_min_f }}&deg;F, {{ hd.forecast.precip_label }}
+        </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+</section>
+
+</div>
+
+<!-- CHECKLIST -->
+<div class="checklist">
+  <div class="container">
+    <div class="section-label">Daily Update Routine</div>
+    <h2 class="section-title">What to check, <em>and when</em>.</h2>
+    <p class="section-lede" style="color: rgba(255,255,255,0.7);">A field-tested cadence for keeping ahead of conditions. Schedule these check-ins on your calendar now.</p>
+
+    <div class="checklist-items">
+      <div class="check-item">
+        <div class="check-when">June 12</div>
+        <div class="check-text"><strong>First reliable forecast.</strong> MeteoSwiss begins showing day-by-day forecasts for June 17&ndash;21. Check meteoswiss.admin.ch for M&uuml;rren, Kandersteg, Grindelwald.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-when">June 12</div>
+        <div class="check-text"><strong>Pull SLF snow depth map.</strong> Visit slf.ch &mdash; look at snow depth at 2,500 m and 2,800 m in the Bernese Oberland region.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-when">June 13</div>
+        <div class="check-text"><strong>Check Bergfex webcams</strong> &mdash; bergfex.com/jungfrau-grindelwald-wengen &mdash; to visually confirm snow line position.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-when">June 14</div>
+        <div class="check-text"><strong>Call Rotstockh&uuml;tte:</strong> +41 33 855 24 64. Ask Simon Furrer about Sefinenfurgga conditions, snow depth on pass, and whether wire ropes are clear.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-when">June 14</div>
+        <div class="check-text"><strong>Call Gspaltenhornh&uuml;tte:</strong> +41 33 676 16 29. Confirm the hut is open and ask about route conditions.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-when">June 14</div>
+        <div class="check-text"><strong>Call Bl&uuml;emlisalph&uuml;tte:</strong> +41 33 676 14 37. Confirm seasonal bridges are installed and the Hoht&uuml;rli approach is passable.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-when">June 15</div>
+        <div class="check-text"><strong>Pull mountain-forecast.com</strong> for Schilthorn, Gspaltenhorn, and Bl&uuml;emlisalphorn at multiple elevations.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-when">June 16</div>
+        <div class="check-text"><strong>Final go/no-go decision.</strong> Check 72-hour outlook on MeteoSwiss. If a major storm is forecast for Day 3 or Day 5, consider alternate routing.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-when">Each AM</div>
+        <div class="check-text"><strong>Ask the hut warden</strong> before leaving each morning. They get fresh forecasts and know the microclimates better than any app.</div>
+      </div>
+      <div class="check-item">
+        <div class="check-when">Each AM</div>
+        <div class="check-text"><strong>Look at the sky.</strong> If clouds are building over the high peaks at 09:00, expect afternoon thunderstorms. Adjust your timing on exposed sections.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- LIVE SOURCES -->
+<section>
+  <div class="section-label">Live Data Sources</div>
+  <h2 class="section-title">Where to <em>refresh</em>.</h2>
+  <p class="section-lede">Bookmark these and refresh frequently from June 12 onward. Listed in priority order.</p>
+
+  <div class="sources-grid">
+    <a class="source-card" href="https://www.meteoswiss.admin.ch/" target="_blank" rel="noopener">
+      <div class="source-num">01</div>
+      <div>
+        <h4>MeteoSwiss</h4>
+        <div class="source-url">meteoswiss.admin.ch</div>
+        <div class="source-desc">The gold standard for Swiss alpine forecasts. Elevation-specific forecasts.</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://www.slf.ch/" target="_blank" rel="noopener">
+      <div class="source-num">02</div>
+      <div>
+        <h4>SLF &mdash; Snow &amp; Avalanche</h4>
+        <div class="source-url">slf.ch</div>
+        <div class="source-desc">Swiss Institute for Snow and Avalanche Research. Daily snow depth maps, avalanche bulletins.</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://www.mountain-forecast.com/peaks/Schilthorn" target="_blank" rel="noopener">
+      <div class="source-num">03</div>
+      <div>
+        <h4>Mountain-Forecast</h4>
+        <div class="source-url">mountain-forecast.com</div>
+        <div class="source-desc">Hourly forecasts at specific summit elevations. Search Schilthorn, Gspaltenhorn, Bl&uuml;emlisalphorn.</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://www.bergfex.com/jungfrau-grindelwald-wengen/" target="_blank" rel="noopener">
+      <div class="source-num">04</div>
+      <div>
+        <h4>Bergfex</h4>
+        <div class="source-url">bergfex.com</div>
+        <div class="source-desc">Live webcams from across the Jungfrau region. Visual snow line confirmation.</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://www.sac-cas.ch/en/huts-and-tours/sac-route-portal/" target="_blank" rel="noopener">
+      <div class="source-num">05</div>
+      <div>
+        <h4>SAC Route Portal</h4>
+        <div class="source-url">sac-cas.ch/en/huts-and-tours/sac-route-portal</div>
+        <div class="source-desc">Swiss Alpine Club&rsquo;s official route portal. Active warnings, seasonal restrictions, hut status.</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://www.windy.com/" target="_blank" rel="noopener">
+      <div class="source-num">06</div>
+      <div>
+        <h4>Windy.com</h4>
+        <div class="source-url">windy.com</div>
+        <div class="source-desc">Weather system visualization. Wind speed at elevation, storm tracking, multi-model comparison.</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container" style="display: flex; justify-content: space-between; width: 100%;">
+    <span>Bernese Oberland Traverse &middot; June 17&ndash;21, 2026</span>
+    <span>Last updated {{ updated_str }} &middot; Auto-refreshes every 12h</span>
+  </div>
+</footer>
+
+</body>
+</html>
