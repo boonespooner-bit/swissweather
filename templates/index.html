@@ -617,6 +617,65 @@
     .day-sidebar { background: var(--ink); }
     .day-card { page-break-inside: avoid; }
     section { margin: 32px 0; }
+    .webcam-grid { display: none; }
+  }
+
+  /* === WEBCAMS === */
+  .webcam-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .webcam-card {
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .webcam-card.featured {
+    grid-column: 1 / -1;
+  }
+  .webcam-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .webcam-header h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .webcam-header .webcam-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    text-align: right;
+  }
+  .webcam-header .webcam-meta .live-indicator {
+    color: var(--safe);
+    font-weight: 700;
+  }
+  .webcam-embed {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background: var(--ink);
+  }
+  .webcam-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  @media (max-width: 900px) {
+    .webcam-grid { grid-template-columns: 1fr; }
+    .webcam-card.featured { grid-column: 1; }
   }
 </style>
 </head>
@@ -790,6 +849,95 @@
       <div class="metric-sub">Bl&uuml;emlisalph&uuml;tte &middot; Day 4</div>
       <p><strong>Snow is essentially guaranteed</strong> at this elevation in mid-June. Expect overnight temperatures near or below freezing. Pack every warm layer you brought.</p>
     </div>
+  </div>
+</section>
+
+<!-- LIVE WEBCAMS -->
+<section>
+  <div class="section-label">Live Webcams &middot; Current Conditions</div>
+  <h2 class="section-title">Eyes on the <em>mountain</em>.</h2>
+  <p class="section-lede">Live camera feeds from key points along the route. Use these to visually confirm snow line position, cloud cover, and current visibility. Powered by Windy.com.</p>
+
+  <div class="webcam-grid">
+
+    <div class="webcam-card featured">
+      <div class="webcam-header">
+        <h4>Schilthorn Summit &middot; 9,744 ft</h4>
+        <div class="webcam-meta">
+          <span class="live-indicator">&#9679; LIVE</span><br>
+          Above the route &middot; Snow reference
+        </div>
+      </div>
+      <div class="webcam-embed">
+        <iframe src="https://webcams.windy.com/webcams/public/embed/player/1248165714/day" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="webcam-card">
+      <div class="webcam-header">
+        <h4>Wengen Village &middot; 4,183 ft</h4>
+        <div class="webcam-meta">
+          <span class="live-indicator">&#9679; LIVE</span><br>
+          Start point
+        </div>
+      </div>
+      <div class="webcam-embed">
+        <iframe src="https://webcams.windy.com/webcams/public/embed/player/1527090997/day" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="webcam-card">
+      <div class="webcam-header">
+        <h4>M&uuml;rren &middot; 5,413 ft</h4>
+        <div class="webcam-meta">
+          <span class="live-indicator">&#9679; LIVE</span><br>
+          Near Sefinenfurgga approach
+        </div>
+      </div>
+      <div class="webcam-embed">
+        <iframe src="https://webcams.windy.com/webcams/public/embed/player/1371729610/day" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="webcam-card">
+      <div class="webcam-header">
+        <h4>Schilthorn &ndash; Jungfrau View &middot; 9,744 ft</h4>
+        <div class="webcam-meta">
+          <span class="live-indicator">&#9679; LIVE</span><br>
+          High alpine panorama
+        </div>
+      </div>
+      <div class="webcam-embed">
+        <iframe src="https://webcams.windy.com/webcams/public/embed/player/1451382127/day" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="webcam-card">
+      <div class="webcam-header">
+        <h4>Bl&uuml;emlisalp &ndash; Oeschinensee &middot; 9,318 ft</h4>
+        <div class="webcam-meta">
+          <span class="live-indicator">&#9679; LIVE</span><br>
+          Day 4 &middot; Highest hut
+        </div>
+      </div>
+      <div class="webcam-embed">
+        <iframe src="https://webcams.windy.com/webcams/public/embed/player/1549406299/day" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="webcam-card">
+      <div class="webcam-header">
+        <h4>Oeschinensee Bergstation &middot; 5,440 ft</h4>
+        <div class="webcam-meta">
+          <span class="live-indicator">&#9679; LIVE</span><br>
+          Day 5 &middot; Descent to Kandersteg
+        </div>
+      </div>
+      <div class="webcam-embed">
+        <iframe src="https://webcams.windy.com/webcams/public/embed/player/1232750172/day" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+
   </div>
 </section>
 
