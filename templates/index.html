@@ -600,6 +600,7 @@
     justify-content: space-between;
   }
 
+  /* --- Tablet --- */
   @media (max-width: 900px) {
     .masthead-bottom { grid-template-columns: repeat(2, 1fr); }
     .snow-status { grid-template-columns: 1fr; }
@@ -609,6 +610,109 @@
     .sources-grid { grid-template-columns: 1fr; }
     .checklist-items { grid-template-columns: 1fr; }
     .checklist { margin: 64px -32px; padding: 40px 32px; }
+  }
+
+  /* --- Mobile --- */
+  @media (max-width: 600px) {
+    body { font-size: 15px; }
+    .container { padding: 0 16px; }
+
+    header.masthead { padding: 16px 0 14px; }
+    .masthead-top {
+      flex-direction: column;
+      gap: 6px;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+      font-size: 9px;
+    }
+    .masthead-top .left, .masthead-top .right {
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    h1.title { font-size: clamp(36px, 10vw, 56px); margin-bottom: 6px; }
+    .subtitle { font-size: 16px; margin-bottom: 16px; }
+    .masthead-bottom {
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding-top: 14px;
+    }
+    .masthead-bottom div strong { font-size: 11px; }
+
+    .alert-banner {
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px 18px;
+      margin: 24px 0;
+    }
+    .alert-banner .alert-icon { width: 36px; height: 36px; }
+    .alert-banner h3 { font-size: 20px; }
+    .alert-banner p { font-size: 14px; }
+
+    section { margin: 36px 0; }
+    .section-lede { font-size: 16px; margin-bottom: 24px; }
+
+    .snow-card { padding: 20px; }
+    .snow-card .metric-value { font-size: 40px; }
+    .snow-card .metric-value .unit { font-size: 18px; }
+
+    /* Outlook grid: horizontal scroll on mobile */
+    .outlook-grid { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .outlook-row {
+      grid-template-columns: 110px repeat(5, 100px);
+      min-width: 610px;
+      font-size: 11px;
+    }
+    .outlook-cell { padding: 12px 8px; gap: 4px; }
+    .outlook-cell.location { padding: 12px; }
+    .outlook-cell.location .name { font-size: 14px; }
+    .weather-icon { width: 28px; height: 28px; }
+    .temp-display { font-size: 16px; }
+
+    /* Day cards: stacked layout */
+    .day-card { margin-bottom: 20px; }
+    .day-card .day-sidebar { padding: 20px; }
+    .day-number { font-size: 10px; }
+    .day-date { font-size: 24px; }
+    .day-icon-block .icon-wrap { width: 52px; height: 52px; }
+    .day-icon-block .condition-text { font-size: 18px; }
+    .day-temps .temp-block .value { font-size: 22px; }
+
+    .day-content { padding: 20px; }
+    .day-content h3 { font-size: 22px; }
+    .day-stats {
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 14px 16px;
+    }
+    .day-stats .stat .value { font-size: 18px; }
+    .snow-detail { padding: 14px 16px; }
+    .snow-detail p { font-size: 14px; }
+
+    .checklist { margin: 36px -16px; padding: 28px 16px; }
+    .check-item { flex-direction: column; gap: 6px; padding: 12px 14px; }
+    .check-item .check-when { width: auto; }
+
+    .webcam-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 12px 14px;
+    }
+    .webcam-header h4 { font-size: 16px; }
+    .webcam-header .webcam-meta { text-align: left; }
+
+    .source-card { padding: 16px; gap: 12px; }
+    .source-card h4 { font-size: 18px; }
+
+    footer {
+      padding: 24px 0;
+      margin-top: 36px;
+    }
+    footer .container {
+      flex-direction: column !important;
+      gap: 8px;
+      text-align: center;
+    }
   }
 
   @media print {
@@ -676,6 +780,10 @@
   @media (max-width: 900px) {
     .webcam-grid { grid-template-columns: 1fr; }
     .webcam-card.featured { grid-column: 1; }
+  }
+  @media (max-width: 600px) {
+    .webcam-grid { gap: 16px; }
+    .webcam-embed { padding-bottom: 75%; }
   }
   .route-map-section { margin-top: 3rem; }
   #route-map {
