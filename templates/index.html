@@ -677,7 +677,37 @@
     .webcam-grid { grid-template-columns: 1fr; }
     .webcam-card.featured { grid-column: 1; }
   }
+  .route-map-section { margin-top: 3rem; }
+  #route-map {
+    width: 100%;
+    height: 500px;
+    border-radius: 6px;
+    border: 1px solid var(--rule);
+    margin-top: 1.5rem;
+  }
+  .leaflet-popup-content-wrapper {
+    font-family: 'Newsreader', Georgia, serif;
+    border-radius: 4px;
+  }
+  .leaflet-popup-content {
+    margin: 10px 14px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  .leaflet-popup-content strong {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.05rem;
+  }
+  .leaflet-popup-content .map-elev {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+  @media (max-width: 700px) {
+    #route-map { height: 350px; }
+  }
 </style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 </head>
 <body>
 
@@ -1201,6 +1231,65 @@
 </section>
 
 </div>
+
+<!-- ROUTE MAP -->
+<section class="route-map-section">
+<div class="container">
+  <div class="section-label">Route Map &middot; Wengen to Kandersteg</div>
+  <h2 class="section-title">The <em>traverse</em>.</h2>
+  <p class="section-lede">Five days across the Bernese Oberland, from Wengen (4,183 ft) to Kandersteg (3,858 ft), crossing four SAC mountain huts.</p>
+  <div id="route-map"></div>
+</div>
+</section>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+(function() {
+  var stops = [
+    {name: "Wengen", lat: 46.6067, lon: 7.9222, elev: "4,183 ft", label: "Base", day: "Start"},
+    {name: "Lobhornhütte", lat: 46.6150, lon: 7.8400, elev: "6,414 ft", label: "Day 1", day: "June 17"},
+    {name: "Rotstockhütte", lat: 46.5767, lon: 7.8267, elev: "6,690 ft", label: "Day 2", day: "June 18"},
+    {name: "Gspaltenhornhütte", lat: 46.5500, lon: 7.7167, elev: "8,054 ft", label: "Day 3", day: "June 19"},
+    {name: "Blüemlisalphütte", lat: 46.4967, lon: 7.6833, elev: "9,318 ft", label: "Day 4", day: "June 20"},
+    {name: "Kandersteg", lat: 46.4950, lon: 7.6744, elev: "3,858 ft", label: "Day 5", day: "June 21"}
+  ];
+
+  var map = L.map('route-map', {scrollWheelZoom: false}).setView([46.55, 7.79], 12);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 17
+  }).addTo(map);
+
+  var routeCoords = stops.map(function(s) { return [s.lat, s.lon]; });
+  L.polyline(routeCoords, {color: '#1F4156', weight: 3, opacity: 0.8, dashArray: '8 6'}).addTo(map);
+
+  var hutIcon = L.divIcon({
+    className: '',
+    html: '<div style="width:12px;height:12px;background:#1F4156;border:2px solid #F4EFE6;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,0.4);"></div>',
+    iconSize: [16, 16],
+    iconAnchor: [8, 8],
+    popupAnchor: [0, -10]
+  });
+
+  var startEndIcon = L.divIcon({
+    className: '',
+    html: '<div style="width:16px;height:16px;background:#B85A1A;border:2px solid #F4EFE6;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,0.4);"></div>',
+    iconSize: [20, 20],
+    iconAnchor: [10, 10],
+    popupAnchor: [0, -12]
+  });
+
+  stops.forEach(function(s, i) {
+    var icon = (i === 0 || i === stops.length - 1) ? startEndIcon : hutIcon;
+    L.marker([s.lat, s.lon], {icon: icon})
+      .addTo(map)
+      .bindPopup('<strong>' + s.name + '</strong><br><span class="map-elev">' + s.elev + ' &middot; ' + s.label + '</span><br>' + s.day);
+  });
+
+  map.fitBounds(L.latLngBounds(routeCoords).pad(0.15));
+})();
+</script>
 
 <!-- FOOTER -->
 <footer>
